@@ -2,43 +2,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Love;
 using static Love.Misc.MeshUtils;
 
 namespace Spine
 {
-    class SuperArray<T> : IEnumerable<T>
+    class SuperArray<T>
     {
-        readonly List<T> list = new List<T>();
-
+        T[] eleArray = new T[0];
         public T this[int index]
         {
             get
             {
-                if (index >= list.Count)
-                    throw new IndexOutOfRangeException();
-
-                return list[index];
+                return eleArray[index];
             }
 
             set
             {
-                if (index >= list.Count)
-                {
-                    var num = index - list.Count + 1;
-                    list.AddRange(new T[num]);
-                }
-                list[index] = value;
+                eleArray[index] = value;
             }
         }
 
-        public void IncreaseCapacity(int num) => list.Capacity += num;
-
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => list.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => list.GetEnumerator();
-
-        public int Count => list.Count;
+        public void IncreaseCapacity(int num)
+        {
+            if (eleArray.Length < num)
+            {
+                var oldArray = eleArray;
+                eleArray = new T[num];
+                Array.Copy(oldArray, eleArray, oldArray.Length);
+            }
+        }
+        public T[] ToArray() => eleArray;
     }
 
     class PolygonBatcher
@@ -167,7 +163,9 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
                     vertex.Light = tempVertex.Light;
                     vertex.Dark = tempVertex.Dark;
 
-                    mesh.SetVertex(vertexStart, VertexPositionColorTextureColor.VertexInfo.GetData(new VertexPositionColorTextureColor[] { vertex }));
+                    //mesh.SetVertex(vertexStart, VertexPositionColorTextureColor.VertexInfo.GetData(new VertexPositionColorTextureColor[] { vertex }));
+                    mesh.SetVertex(vertexStart, VertexPositionColorTextureColor.TransformToBytesByBuffer(ref vertex));
+                    //mesh.SetVertex(vertexStart, VertexPositionColorTextureColor.TransformToBytesByCopy(ref vertex));
                 }
             }
             else
@@ -181,7 +179,9 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
                     vertex.Light = color;
                     vertex.Dark = darkColor;
 
-                    mesh.SetVertex(vertexStart, VertexPositionColorTextureColor.VertexInfo.GetData(new VertexPositionColorTextureColor[] { vertex }));
+                    //mesh.SetVertex(vertexStart, VertexPositionColorTextureColor.VertexInfo.GetData(new VertexPositionColorTextureColor[] { vertex }));
+                    mesh.SetVertex(vertexStart, VertexPositionColorTextureColor.TransformToBytesByBuffer(ref vertex));
+                    //mesh.SetVertex(vertexStart, VertexPositionColorTextureColor.TransformToBytesByCopy(ref vertex));
                 }
             }
 
@@ -217,22 +217,122 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
         }
     }
 
-
+    [StructLayout(LayoutKind.Explicit)]
     public struct VertexPositionColorTextureColor
     {
-        [Name("VertexPosition")]
-        public float X, Y;
+        [FieldOffset(0), Name("VertexPosition")] public float X;
+        [FieldOffset(4), Name("VertexPosition")] public float Y;
 
-        [Name("VertexTexCoord")]
-        public float U, V;
+        [FieldOffset(8), Name("VertexTexCoord")] public float U;
+        [FieldOffset(12), Name("VertexTexCoord")] public float V;
 
-        [Name("VertexColor")]
-        public byte R, G, B, A;
+        [FieldOffset(16), Name("VertexColor")] public byte R;
+        [FieldOffset(17), Name("VertexColor")] public byte G;
+        [FieldOffset(18), Name("VertexColor")] public byte B;
+        [FieldOffset(19), Name("VertexColor")] public byte A;
+        
+        [FieldOffset(20), Name("VertexColor2")] public byte R2;
+        [FieldOffset(21), Name("VertexColor2")] public byte G2;
+        [FieldOffset(22), Name("VertexColor2")] public byte B2;
+        [FieldOffset(23), Name("VertexColor2")] public byte A2;
 
-        [Name("VertexColor2")]
-        public byte R2, G2, B2, A2;
+
+        [FieldOffset(0)] byte b_x1;
+        [FieldOffset(1)] byte b_x2;
+        [FieldOffset(2)] byte b_x3;
+        [FieldOffset(3)] byte b_x4;
+        [FieldOffset(4)] byte b_y1;
+        [FieldOffset(5)] byte b_y2;
+        [FieldOffset(6)] byte b_y3;
+        [FieldOffset(7)] byte b_y4;
+        [FieldOffset(8)] byte b_u1;
+        [FieldOffset(9)] byte b_u2;
+        [FieldOffset(10)] byte b_u3;
+        [FieldOffset(11)] byte b_u4;
+        [FieldOffset(12)] byte b_v1;
+        [FieldOffset(13)] byte b_v2;
+        [FieldOffset(14)] byte b_v3;
+        [FieldOffset(15)] byte b_v4;
 
         public readonly static Info<VertexPositionColorTextureColor> VertexInfo = Parse<VertexPositionColorTextureColor>();
+
+
+        //public static byte[] TransformToBytesByCopy(ref VertexPositionColorTextureColor vpcc)
+        //{
+        //    unsafe
+        //    {
+        //        fixed (void * pSrc = &vpcc)
+        //        {
+        //            fixed(void* pDest = transform_buffer)
+        //            {
+        //                Buffer.MemoryCopy(pSrc, pDest, transform_buffer.Length, transform_buffer.Length);
+        //            }
+        //        }
+        //    }
+        //    return transform_buffer;
+        //}
+
+
+        public static byte[] transform_buffer = new byte[24];
+        public static byte[] TransformToBytesByBuffer(ref VertexPositionColorTextureColor vpcc)
+        {
+            transform_buffer[0] = vpcc.b_x1;
+            transform_buffer[1] = vpcc.b_x2;
+            transform_buffer[2] = vpcc.b_x3;
+            transform_buffer[3] = vpcc.b_x4;
+
+            transform_buffer[4] = vpcc.b_y1;
+            transform_buffer[5] = vpcc.b_y2;
+            transform_buffer[6] = vpcc.b_y3;
+            transform_buffer[7] = vpcc.b_y4;
+
+            transform_buffer[8] = vpcc.b_u1;
+            transform_buffer[9] = vpcc.b_u2;
+            transform_buffer[10] = vpcc.b_u3;
+            transform_buffer[11] = vpcc.b_u4;
+
+            transform_buffer[12] = vpcc.b_v1;
+            transform_buffer[13] = vpcc.b_v2;
+            transform_buffer[14] = vpcc.b_v3;
+            transform_buffer[15] = vpcc.b_v4;
+
+            transform_buffer[16] = vpcc.R;
+            transform_buffer[17] = vpcc.G;
+            transform_buffer[18] = vpcc.B;
+            transform_buffer[19] = vpcc.A;
+
+            transform_buffer[20] = vpcc.R2;
+            transform_buffer[21] = vpcc.G2;
+            transform_buffer[22] = vpcc.B2;
+            transform_buffer[23] = vpcc.A2;
+
+            return transform_buffer;
+        }
+        public static byte[] TransformToBytes(ref VertexPositionColorTextureColor vpcc)
+        {
+            return new byte[]
+            {
+                vpcc.b_x1,
+                vpcc.b_x2,
+                vpcc.b_x3,
+                vpcc.b_x4,
+                vpcc.b_y1,
+                vpcc.b_y2,
+                vpcc.b_y3,
+                vpcc.b_y4,
+                vpcc.b_u1,
+                vpcc.b_u2,
+                vpcc.b_u3,
+                vpcc.b_u4,
+                vpcc.b_v1,
+                vpcc.b_v2,
+                vpcc.b_v3,
+                vpcc.b_v4,
+
+                vpcc.R, vpcc.G, vpcc.B, vpcc.A,
+                vpcc.R2, vpcc.G2, vpcc.B2, vpcc.A2,
+            };
+        }
 
         public Color Light
         {
@@ -261,6 +361,23 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
 
         public VertexPositionColorTextureColor(float x, float y, float u, float v, Color light, Color dark)
         {
+            b_x1 = 0;
+            b_x2 = 0;
+            b_x3 = 0;
+            b_x4 = 0;
+            b_y1 = 0;
+            b_y2 = 0;
+            b_y3 = 0;
+            b_y4 = 0;
+            b_u1 = 0;
+            b_u2 = 0;
+            b_u3 = 0;
+            b_u4 = 0;
+            b_v1 = 0;
+            b_v2 = 0;
+            b_v3 = 0;
+            b_v4 = 0;
+
             X = x;
             Y = y;
             U = u;
