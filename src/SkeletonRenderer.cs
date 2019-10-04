@@ -8,7 +8,7 @@ namespace Spine
 {
     public class SkeletonRenderer
     {
-        readonly PolygonBatcher batcher = new PolygonBatcher(3 * 500);
+        readonly PolygonBatcher batcher = new PolygonBatcher(2 * 500);// new PolygonBatcher(3 * 500);
         bool premultipliedAlpha = false;
         SkeletonClipping clipper = new SkeletonClipping();
         IVertexEffect vertexEffect = null;

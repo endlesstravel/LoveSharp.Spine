@@ -87,8 +87,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Love2dCS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\GameWorkSpace\PoarOfEngine\PoarOfEngine\packages\Love2dCS.11.0.38\lib\net45\Love2dCS.dll</HintPath>
+    <Reference Include="Love2dCS, Version=11.0.40.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\GameWorkSpace\PoarOfEngine\PoarOfEngine\packages\Love2dCS.11.0.40\lib\netstandard1.0\Love2dCS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -119,10 +119,35 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
                 lastTexture = texture;
                 mesh.SetTexture(texture);
             }
-            else if (this.verticesLength + numVertices >= this.maxVerticesLength || this.indicesLength + numIndices > this.maxIndicesLength)
+
+            if (this.verticesLength + numVertices >= this.maxVerticesLength || this.indicesLength + numIndices > this.maxIndicesLength)
             {
                 Flush();
+
+                // overflow ..... to split ...
+                //if (numVertices >= this.maxVerticesLength || numIndices > this.maxIndicesLength)
+                //{
+                //    int lenVertices = numVertices;
+                //    int lenIndices = indices.Length;
+
+                //    // full bufer
+                //    int maxVV = maxVerticesLength - 2;
+                //    int maxII = maxIndicesLength - 6;
+
+                //    var verticesA = GenCopyed(vertices, 0, maxVV);
+                //    var uvsA = GenCopyed(uvs, 0, maxVV);
+                //    var indicesA = GenCopyed(indices, 0, maxII);
+                //    Draw(texture, verticesA, uvsA, maxVV, indicesA, color, darkColor, vertexEffect);
+
+                //    // remain
+                //    var verticesB = GenCopyed(vertices, maxVV, lenVertices - maxVV);
+                //    var uvsB = GenCopyed(uvs, maxVV, lenVertices - maxVV);
+                //    var indicesB = GenCopyed(indices, maxII, lenIndices - maxII);
+                //    Draw(texture, verticesB, uvsB, lenVertices - maxVV, indicesB, color, darkColor, vertexEffect);
+                //    return;
+                //}
             }
+
 
            
             var indexStart = this.indicesLength;
@@ -189,12 +214,31 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
             this.verticesLength = this.verticesLength + numVertices;
         }
 
+        T[] GenCopyed<T>(T[] src, int sourceIndex, int len)
+        {
+            T[] subArray = new T[len];
+            Array.Copy(src, sourceIndex, subArray, 0, subArray.Length);
+            return subArray;
+        }
+
         public void Flush()
         {
             if (this.verticesLength == 0) return;
-
-            mesh.SetVertexMap(this.indices.ToArray());
+            var indicesArray = this.indices.ToArray();
+            mesh.SetVertexMap(indicesArray);
+            ////if (this.indicesLength < Mathf.CeilToInt(indicesArray.Length * 0.75f)) // optimization code
+            //if (this.indicesLength < indicesArray.Length) // optimization code
+            //{
+            //    uint[] subArray = new uint[this.indicesLength];
+            //    Array.Copy(indicesArray, subArray, subArray.Length);
+            //    mesh.SetVertexMap(indicesArray);
+            //}
+            //else
+            //{
+            //    mesh.SetVertexMap(indicesArray);
+            //}
             mesh.SetDrawRange(0, this.indicesLength);
+
             Graphics.SetShader(twoColorTintShader);
             Graphics.Draw(mesh);
             Graphics.SetShader();
