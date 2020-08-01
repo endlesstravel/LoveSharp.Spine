@@ -1,0 +1,4 @@
+# 复制文件
+rm workspace/lib/*
+cp /d/GameWorkSpace/DeploySquare/ViewSharp/FlexLayoutSharp/FlexLayoutSharp/bin/Release/FlexLayoutSharp.dll workspace/lib/
+cp /d/GameWorkSpace/DeploySquare/ViewSharp/FlexLayoutSharp/FlexLayoutSharp/bin/Release/FlexLayoutSharp.xml workspace/lib/

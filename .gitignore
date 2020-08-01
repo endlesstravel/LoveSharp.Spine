@@ -270,3 +270,4 @@ example_build/OpenAL32.dll
 example_build/SDL2.dll
 example_build/spine-csharp.dll
 example_build/spine-lovecs.dll
+example_build/

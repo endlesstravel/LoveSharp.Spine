@@ -30,7 +30,7 @@ namespace Spine
         {
             try
             {
-                return Resource.NewImage(path);
+                return Graphics.NewImage(path);
             }
             catch (Exception ex)
             {

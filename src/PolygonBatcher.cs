@@ -84,7 +84,7 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
 
         public PolygonBatcher(int vertexCount)
         {
-            mesh = Graphics.NewMesh(VertexPositionColorTextureColor.VertexInfo.formatList, vertexCount, MeshDrawMode.Trangles, SpriteBatchUsage.Dynamic);
+            mesh = Graphics.NewMesh(VertexPositionColorTextureColor.VertexFormatDescribute, vertexCount, MeshDrawMode.Trangles, SpriteBatchUsage.Dynamic);
             //mesh = Graphics.NewMesh(Love.Misc.MeshUtils.GetVertexFormat(), vertexCount, MeshDrawMode.Trangles, SpriteBatchUsage.Dynamic);
             maxVerticesLength = vertexCount;
             maxIndicesLength = vertexCount * 3;
@@ -264,21 +264,21 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
     [StructLayout(LayoutKind.Explicit)]
     public struct VertexPositionColorTextureColor
     {
-        [FieldOffset(0), Name("VertexPosition")] public float X;
-        [FieldOffset(4), Name("VertexPosition")] public float Y;
+        [FieldOffset(0), MeshAttributeName("VertexPosition")] public float X;
+        [FieldOffset(4), MeshAttributeName("VertexPosition")] public float Y;
 
-        [FieldOffset(8), Name("VertexTexCoord")] public float U;
-        [FieldOffset(12), Name("VertexTexCoord")] public float V;
+        [FieldOffset(8), MeshAttributeName("VertexTexCoord")] public float U;
+        [FieldOffset(12), MeshAttributeName("VertexTexCoord")] public float V;
 
-        [FieldOffset(16), Name("VertexColor")] public byte R;
-        [FieldOffset(17), Name("VertexColor")] public byte G;
-        [FieldOffset(18), Name("VertexColor")] public byte B;
-        [FieldOffset(19), Name("VertexColor")] public byte A;
+        [FieldOffset(16), MeshAttributeName("VertexColor")] public byte R;
+        [FieldOffset(17), MeshAttributeName("VertexColor")] public byte G;
+        [FieldOffset(18), MeshAttributeName("VertexColor")] public byte B;
+        [FieldOffset(19), MeshAttributeName("VertexColor")] public byte A;
         
-        [FieldOffset(20), Name("VertexColor2")] public byte R2;
-        [FieldOffset(21), Name("VertexColor2")] public byte G2;
-        [FieldOffset(22), Name("VertexColor2")] public byte B2;
-        [FieldOffset(23), Name("VertexColor2")] public byte A2;
+        [FieldOffset(20), MeshAttributeName("VertexColor2")] public byte R2;
+        [FieldOffset(21), MeshAttributeName("VertexColor2")] public byte G2;
+        [FieldOffset(22), MeshAttributeName("VertexColor2")] public byte B2;
+        [FieldOffset(23), MeshAttributeName("VertexColor2")] public byte A2;
 
 
         [FieldOffset(0)] byte b_x1;
@@ -298,7 +298,7 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
         [FieldOffset(14)] byte b_v3;
         [FieldOffset(15)] byte b_v4;
 
-        public readonly static Info<VertexPositionColorTextureColor> VertexInfo = Parse<VertexPositionColorTextureColor>();
+        public readonly static MeshFormatDescribe<VertexPositionColorTextureColor> VertexFormatDescribute = MeshFormatDescribe.New<VertexPositionColorTextureColor>();
 
 
         //public static byte[] TransformToBytesByCopy(ref VertexPositionColorTextureColor vpcc)
