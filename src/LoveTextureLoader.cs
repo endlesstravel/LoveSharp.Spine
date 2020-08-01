@@ -23,7 +23,7 @@ namespace Spine
         }
     }
 
-    static public class Util
+    static class Util
     {
 
         static public Image LoadTexture(String path)

@@ -1,2 +1,2 @@
 # nuget 发布
-nuget push LoveSharp.Imgui.1.0.1.nupkg -ApiKey oy2ga7o4zn3uf6mx6bqahzxiz56mnxou5o25p67eb227dy -Source https://www.nuget.org
+nuget push LoveSharp.Spine.1.0.0.nupkg -ApiKey oy2asf23h23bfvcsn66aylq57ewb7ihuzimm5dgdwjldvi -Source https://www.nuget.org

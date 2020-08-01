@@ -271,3 +271,4 @@ example_build/SDL2.dll
 example_build/spine-csharp.dll
 example_build/spine-lovecs.dll
 example_build/
+nuget_published/

@@ -1,2 +1,2 @@
 # 打包
-nuget pack LoveSharp.Imgui.nuspec
+nuget pack LoveSharp.Spine.nuspec

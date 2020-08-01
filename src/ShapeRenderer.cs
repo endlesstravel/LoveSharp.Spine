@@ -40,7 +40,7 @@ namespace Spine {
 	///
 	/// Call drawing methods in between Begin()/End()
 	/// </summary>
-	public class ShapeRenderer {
+	class ShapeRenderer {
 		public ShapeRenderer() {
 		}
 
