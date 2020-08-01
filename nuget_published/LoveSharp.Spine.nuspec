@@ -4,7 +4,7 @@
     <metadata>
         <!-- Required elements-->
         <id>LoveSharp.Spine</id>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <description>spine for LoveSharp LÖVE </description>
         <authors>endlesstravel</authors>
 
@@ -14,7 +14,7 @@
         <iconUrl>https://gitee.com/endlesstravel/spine-lovecs/raw/master/logo-x.png</iconUrl>
 
         <releaseNotes>
-1.0.0 release
+1.0.1 release
         </releaseNotes>
         <tags>LÖVE spine game-engine  LoveSharp</tags>
 

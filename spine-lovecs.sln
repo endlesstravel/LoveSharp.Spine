@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "spine-csharp", "spine-runti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "example", "example\example.csproj", "{3393F739-ACE1-4CED-860D-A7543EBF3F20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppTestNuget", "AppTestNuget\AppTestNuget.csproj", "{D607F484-A6A0-4955-9804-B7943C0E2938}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,14 @@ Global
 		{3393F739-ACE1-4CED-860D-A7543EBF3F20}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3393F739-ACE1-4CED-860D-A7543EBF3F20}.Release|x64.ActiveCfg = Release|x64
 		{3393F739-ACE1-4CED-860D-A7543EBF3F20}.Release|x64.Build.0 = Release|x64
+		{D607F484-A6A0-4955-9804-B7943C0E2938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D607F484-A6A0-4955-9804-B7943C0E2938}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D607F484-A6A0-4955-9804-B7943C0E2938}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D607F484-A6A0-4955-9804-B7943C0E2938}.Debug|x64.Build.0 = Debug|Any CPU
+		{D607F484-A6A0-4955-9804-B7943C0E2938}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D607F484-A6A0-4955-9804-B7943C0E2938}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D607F484-A6A0-4955-9804-B7943C0E2938}.Release|x64.ActiveCfg = Release|Any CPU
+		{D607F484-A6A0-4955-9804-B7943C0E2938}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
